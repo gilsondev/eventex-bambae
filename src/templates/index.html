@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC  "-­‐//W3C//DTD HTML 4.01//EN">
+<html>
+    <head><title>EventeX</title></head>
+    <body>
+        <img src="{{ STATIC_URL }}img/logo.png"   />
+        <h1>Parabéns {{ subscription.name }}!</h1>
+        <p>
+            Sua inscrição foi realizada em {{ subscription.created_at|date:"d/m/Y" }}.
+        </p>
+        <p>
+            Em breve, alguém entrará em contato pelo
+            {% if subscription.phone %}
+                telefone {{ subscription.phone }}.
+            {% else %}
+                e‐mail {{ subscription.email }}.
+            {% endif %}
+        </p>
+    </body>
+</html>
