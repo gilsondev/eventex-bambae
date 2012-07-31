@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-­‐//W3C//DTD HTML 4.01//EN">
+<html>
+    <head>
+        {% block title %}
+            <title>{{ title_name|default:"EventeX" }}</title>
+        {% endblock title %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css" />
+            <link rel="stylesheet" href="{{ STATIC_URL }}css/skeleton.css" />
+        {% endblock stylesheets %}
+    </head>
+    <body>
+        <div class="sixteen columns">
+            <center><img src="{{ STATIC_URL }}img/logo.jpg" /></center>
+        </div>
+        <hr />
+        {% block main %} {% endblock main %}
+        <div class="sixteen columns">
+            <hr />
+            <center>
+                <p>Bambae &copy; - 2012</p>
+            </center>
+        </div>
+    </body>
+</html>
