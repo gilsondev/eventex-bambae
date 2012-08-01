@@ -2,3 +2,4 @@ Django==1.4.1
 Unipath==0.2.1
 psycopg2
 dj-database-url==0.2.1
+South==0.7.5
