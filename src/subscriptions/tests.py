@@ -2,11 +2,15 @@
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse as r
+from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.core import mail
 
+from mock import Mock
+
 from .models import Subscription
 from .forms import SubscriptionForm
+from .admin import SubscriptionAdmin, admin
 
 
 class SubscribeViewTest(TestCase):
@@ -145,3 +149,47 @@ class SuccessViewNotFound(TestCase):
         'Acesso á inscrição não cadastrada deve retornar 404.'
         response = self.client.get(r('subscriptions:success', args=[0]))
         self.assertEquals(404, response.status_code)
+
+
+class CustomActionTest(TestCase):
+    def setUp(self):
+        Subscription.objects.create(
+            name='Henrique Bastos',
+            cpf='03901901981',
+            email='henrique@bastos.net',
+            phone='21-91820191',
+        )
+        self.modeladmin = SubscriptionAdmin(Subscription, admin.site)
+        self.modeladmin.mark_as_paid(Mock(), Subscription.objects.all())
+
+    def test_update(self):
+        'Dados devem ser atualizados como pago de acordo com o Queryset'
+        self.assertEquals(1, Subscription.objects.filter(paid=True).count())
+
+
+class ExportSubscriptionViewTest(TestCase):
+    def setUp(self):
+        User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
+        assert self.client.login(username='admin', password='admin')
+        self.resp = self.client.get(r('admin:export_subscriptions'))
+
+    def test_get(self):
+        u'Sucesso ao acessar a url de download do arquivo CSV'
+        self.assertEquals(200, self.resp.status_code)
+
+    def test_content_type(self):
+        u'Content type deve ser text/csv'
+        self.assertEquals('text/csv', self.resp['Content-Type'])
+
+    def test_attachment(self):
+        u'Header indicado ao browser que a resposta é um arquivo a ser salvo'
+        self.assertTrue('attachment;' in self.resp['Content-Disposition'])
+
+
+class ExportSubscriptionsNotFound(TestCase):
+    def test_404(self):
+        u'Login é exigido para o download do CSV'
+        # Quando o usuário não está autenticado,
+        # o Admin responde com 200 e renderiza o html de login.
+        resp = self.client.get(r('admin:export_subscriptions'))
+        self.assertTemplateUsed(resp, 'admin/login.html')
