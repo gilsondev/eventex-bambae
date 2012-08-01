@@ -193,3 +193,22 @@ class ExportSubscriptionsNotFound(TestCase):
         # o Admin responde com 200 e renderiza o html de login.
         resp = self.client.get(r('admin:export_subscriptions'))
         self.assertTemplateUsed(resp, 'admin/login.html')
+
+
+class SubscriptionFormTest(TestCase):
+    def test_must_inform_email_or_phone(self):
+        u'Email e Phone são opcionais, mas ao menos 1 precisa ser informado'
+        form = self.make_and_validate_form(email='', phone='')
+        self.assertDictEqual(form.errors,
+                             {'__all__': [u'Informe seu e-mail ou telefone.']})
+
+    def make_and_validate_form(self, **kwargs):
+        'Helper que retorna o cleaned_data e errors do formulário'
+        data = dict(name='Henrique Bastos', email='henrique@bastos.net',
+                    cpf='00000000000', phone='21-96186180')
+
+        data.update(kwargs)
+        form = SubscriptionForm(data)
+        form.is_valid()
+
+        return form
