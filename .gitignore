@@ -13,3 +13,4 @@ Scripts
 .DS_Store
 .env
 .ropeproject
+*.sw[po]
