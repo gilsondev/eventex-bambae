@@ -64,3 +64,18 @@ class ContactModelTest(TestCase):
         contact = Contact.objects.create(speaker=self.speaker, kind='E',
                                          value="henrique@bastos.net")
         self.assertEquals(1, contact.pk)
+
+
+class TalkModelTest(TestCase):
+    def setUp(self):
+        self.talk = Talk.objects.create(
+            title=u"Introdução ao Django",
+            description="Descrição da Palestra",
+            start_time='10:00'
+        )
+
+    def test_create(self):
+        self.assertEquals(self.talk.pk, 1)
+
+    def test_unicode(self):
+        self.assertEquals(u'Introdução ao Django', unicode(self.talk))

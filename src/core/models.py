@@ -43,3 +43,12 @@ class Contact(models.Model):
     phones = KindContactManager('P')
     emails = KindContactManager('E')
     faxes = KindContactManager('F')
+
+
+class Talk(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    start_time = models.TimeField(blank=True)
+
+    def __unicode__(self):
+        return self.title
