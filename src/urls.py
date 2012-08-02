@@ -9,6 +9,7 @@ urlpatterns = patterns('src',
     url(r'^$', 'core.views.home', name='homepage'),
     url(r'^inscricao/', include('src.subscriptions.urls',
                                 namespace='subscriptions')),
+    url(r'^', include('src.core.urls', namespace='core')),
 
     url(r'^admin/', include(admin.site.urls)),
 )

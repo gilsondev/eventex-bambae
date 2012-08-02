@@ -15,3 +15,31 @@ class Speaker(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class KindContactManager(models.Manager):
+    def __init__(self, kind):
+        super(KindContactManager, self).__init__()
+        self.kind = kind
+
+    def get_query_set(self):
+        qs = super(KindContactManager, self).get_query_set()
+        qs = qs.filter(kind=self.kind)
+        return qs
+
+
+class Contact(models.Model):
+    KINDS = (
+        ('P', _(u'Telefone')),
+        ('E', _(u'E-mail')),
+        ('F', _(u'Fax')),
+    )
+
+    speaker = models.ForeignKey('Speaker', verbose_name=_(u'Palestrante'))
+    kind = models.CharField(_(u'Tipo'), max_length=1, choices=KINDS)
+    value = models.CharField(_(u'Valor'), max_length=255)
+
+    objects = models.Manager()
+    phones = KindContactManager('P')
+    emails = KindContactManager('E')
+    faxes = KindContactManager('F')
