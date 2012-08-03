@@ -176,4 +176,4 @@ DATABASES = {
 }
 
 # Hidden Variable Environments
-HIDDEN_ENVVARS = []
+HIDDEN_ENVVARS = ['EMAIL_HOST_PASSWORD']
