@@ -14,6 +14,14 @@ def cleanse_envvar(key, value):
 class HiddenEnvVarsMiddleware(object):
     """Classe responsável por retirar variáveis de ambiente
     que exibem informações de risco do projeto.
+
+    É necessário inserir a variável a ser alterada em ``HIDDEN_ENVVARS``
+    no arquivo ``settings.py``. Exemplo::
+
+        HIDDEN_ENVVARS = [
+            'DATABASE_PASSWORD',
+            'EMAIL_PASSWORD',
+        ]
     """
     def process_exception(self, request, exception):
         for key, value in request.META.items():
