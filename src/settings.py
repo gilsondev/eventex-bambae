@@ -109,6 +109,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'src.core.middleware.HiddenEnvVarsMiddleware',
 )
 
 ROOT_URLCONF = 'src.urls'
@@ -173,3 +174,6 @@ DATABASES = {
     'default': dj_database_url.config(
     default='sqlite:///' + PROJECT_DIR.child('database.db'))
 }
+
+# Hidden Variable Environments
+HIDDEN_ENVVARS = []
